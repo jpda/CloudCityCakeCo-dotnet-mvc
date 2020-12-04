@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using CloudCityCakeCo.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CloudCityCakeCo.Controllers
 {
@@ -24,6 +25,11 @@ namespace CloudCityCakeCo.Controllers
         }
 
         public IActionResult Privacy()
+        {
+            return View();
+        }
+
+        public IActionResult Claims()
         {
             return View();
         }

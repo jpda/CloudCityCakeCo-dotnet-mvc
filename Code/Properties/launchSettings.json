@@ -6,6 +6,7 @@
       "applicationUrl": "http://localhost:49086"
     }
   },
+ 
   "profiles": {
     "IIS Express": {
       "commandName": "IISExpress",
@@ -20,7 +21,7 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "http://localhost:49086"
+      "applicationUrl": "https://localhost:5001;http://localhost:49086"
     }
   }
 }

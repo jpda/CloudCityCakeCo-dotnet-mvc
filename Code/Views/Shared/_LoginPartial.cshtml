@@ -1,0 +1,37 @@
+@inject Microsoft.AspNetCore.Authorization.IAuthorizationService authzService
+
+<ul class="navbar-nav">
+	@if (User.Identity.IsAuthenticated)
+	{
+		<li class="nav-item">
+			<a class="nav-link text-dark" asp-controller="Home" asp-action="Claims">Hello @User.Identity.Name!</a>
+		</li>
+		@if (authzService.AuthorizeAsync(User, null, "HasStrongAuth").Result.Succeeded)
+			{
+				<li class="nav-item">
+					<a class="nav-link text-dark" asp-controller="Admin" asp-action="Index">Admin</a>
+				</li>
+			}
+			else
+			{
+				<li class="nav-item">
+					<a class="nav-link text-dark" asp-controller="Admin" asp-action="Index"
+					   id="tooltip-demo"
+					   data-toggle="tooltip"
+					   data-placement="bottom"
+					   title="MFA is NOT enabled. This is required for the Admin Page. If you have activated MFA, then logout, login again.">
+						Admin (Not Enabled)
+					</a>
+				</li>
+			}
+		<li class="nav-item">
+			<a class="nav-link text-dark" asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="SignOut">Sign out</a>
+		</li>
+	}
+	else
+	{
+		<li class="nav-item">
+			<a class="nav-link text-dark" asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="SignIn">Sign in</a>
+		</li>
+	}
+</ul>
