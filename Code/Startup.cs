@@ -65,6 +65,7 @@ namespace CloudCityCakeCo
                         }
                 };
                 x.ResponseType = OpenIdConnectResponseType.Code;
+                x.SaveTokens = true;
                 x.Events = new OpenIdConnectEvents()
                 {
                     OnRedirectToIdentityProvider = ctx =>
@@ -73,20 +74,11 @@ namespace CloudCityCakeCo
                         return System.Threading.Tasks.Task.CompletedTask;
                     }
                 };
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    NameClaimType = "displayName"
+                };
             });
-
-            // services.Configure<MicrosoftIdentityOptions>(x =>
-            // {
-            //     x.ResponseType = OpenIdConnectResponseType.Code;
-            //     x.Events = new OpenIdConnectEvents()
-            //     {
-            //         OnRedirectToIdentityProvider = ctx =>
-            //         {
-            //             ctx.ProtocolMessage.Scope += " https://jpdab2c.onmicrosoft.com/cloudcity/sodumb";
-            //             return System.Threading.Tasks.Task.CompletedTask;
-            //         }
-            //     };
-            // });
 
             services.Configure<SendGridAccount>(Configuration.GetSection("SendGridAccount"));
             services.Configure<TwilioAccount>(Configuration.GetSection("TwilioAccount"));
@@ -100,9 +92,9 @@ namespace CloudCityCakeCo
                .AddEntityFrameworkStores<ApplicationDbContext>()
                .AddDefaultTokenProviders();
 
-            // services.AddAuthorization(options =>
-            //     options.AddPolicy("TwoFactorEnabled",
-            //         x => x.RequireClaim("amr", "mfa")));
+            services.AddAuthorization(options =>
+                options.AddPolicy("TwoFactorEnabled",
+                    x => x.RequireClaim("AuthenticationMethodsUsed", "mfa")));
 
             // services.AddAuthorization(x =>
             // {
